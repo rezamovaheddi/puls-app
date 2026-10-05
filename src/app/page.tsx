@@ -1,69 +1,67 @@
-import Image from "next/image";
+import { Activity } from "lucide-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex min-h-svh flex-col">
+      <header className="border-b">
+        <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-semibold tracking-tight"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <span className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
+              <Activity className="size-4" aria-hidden="true" />
+            </span>
+            Pulse
+          </Link>
+          <nav className="flex items-center gap-6" aria-label="Main">
+            <Link
+              href="/docs"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Docs
+            </Link>
+            <Button asChild>
+              <Link href="/overview">Open dashboard</Link>
+            </Button>
+          </nav>
         </div>
+      </header>
+
+      <main className="flex flex-1 items-center justify-center">
+        <section className="py-24 md:py-32">
+          <div className="container mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 text-center">
+            <Badge variant="outline">Private beta</Badge>
+            <h1 className="max-w-3xl text-balance text-4xl font-semibold tracking-tight md:text-6xl">
+              Ship software at the{" "}
+              <span className="bg-gradient-to-r from-primary via-primary/80 to-blue-500 bg-clip-text text-transparent">
+                speed of thought
+              </span>
+            </h1>
+            <p className="max-w-2xl text-pretty text-lg text-muted-foreground">
+              Pulse is the control room for your engineering team — plan projects, track
+              issues, and keep every release on course from one fast, focused workspace.
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button size="lg" asChild>
+                <Link href="/overview">Get started</Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/docs">Read the docs</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
+
+      <footer className="border-t py-8">
+        <div className="container mx-auto max-w-6xl px-6 text-sm text-muted-foreground">
+          © 2026 Pulse
+        </div>
+      </footer>
     </div>
   );
 }
