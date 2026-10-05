@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test \"tests/**/*.test.mts\""
+    "test": "node --test tests/utils.test.mts tests/mock-data.test.mts"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
