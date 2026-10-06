@@ -1,0 +1,43 @@
+[project]
+name = "pulse-backend"
+version = "0.1.0"
+description = "Pulse backend — Django + DRF + PostgreSQL, Clean Architecture"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = [".venv", "migrations"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # bugbear
+    "UP",  # pyupgrade
+    "DJ",  # django-specific
+]
+ignore = [
+    "E501", # long lines live in a few docstrings/URL patterns; formatter keeps code sane
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main"]
+check_untyped_defs = true
+warn_unused_ignores = true
+exclude = [".venv", "migrations"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings.test"

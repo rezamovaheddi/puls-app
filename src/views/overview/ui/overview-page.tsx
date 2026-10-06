@@ -2,7 +2,6 @@ import { Plus, TrendingDown, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { ACTIVITIES, ActivityItem } from "@/entities/activity";
 import { PROJECTS } from "@/entities/project";
-import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import {

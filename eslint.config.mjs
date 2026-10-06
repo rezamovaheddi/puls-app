@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Non-frontend trees in this monorepo:
+    "backend/**",
+    ".zcode/**",
+    "arena-audit-out/**",
   ]),
 ]);
 
