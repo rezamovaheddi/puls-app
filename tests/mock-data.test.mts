@@ -1,11 +1,12 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 
-import { ACTIVITIES } from "../src/lib/mock/activity.ts";
-import { ISSUES } from "../src/lib/mock/issues.ts";
-import { PROJECTS } from "../src/lib/mock/projects.ts";
-import { mainNav, secondaryNav } from "../src/config/nav.ts";
-import type { IssuePriority, IssueStatus, ProjectStatus } from "../src/types/pulse.ts";
+import { ACTIVITIES } from "../src/entities/activity/model/mock-data.ts";
+import { ISSUES } from "../src/entities/issue/model/mock-data.ts";
+import { PROJECTS } from "../src/entities/project/model/mock-data.ts";
+import { mainNav, secondaryNav } from "../src/widgets/shell/config/nav.ts";
+import type { IssuePriority, IssueStatus } from "../src/entities/issue/model/types.ts";
+import type { ProjectStatus } from "../src/entities/project/model/types.ts";
 
 const PROJECT_STATUSES: readonly ProjectStatus[] = ["planning", "active", "paused", "completed"];
 const ISSUE_STATUSES: readonly IssueStatus[] = ["todo", "in-progress", "review", "done"];

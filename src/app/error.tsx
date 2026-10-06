@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { ErrorState } from "@/components/shared/error-state";
+import { Button } from "@/shared/ui/button";
+import { ErrorState } from "@/shared/ui/error-state";
 
 export default function ErrorPage({
   error,

@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 
-import { cn } from "../src/lib/utils.ts";
+import { cn } from "../src/shared/lib/utils.ts";
 
 describe("cn", () => {
   it("joins class names", () => {
