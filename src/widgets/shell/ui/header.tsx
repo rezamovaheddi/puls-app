@@ -1,8 +1,10 @@
 "use client";
 
 import { LogOut, Search, Settings, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { signOut, useSession } from "@/features/session";
 import { ModeToggle } from "@/features/theme-switcher";
 import { MobileNav } from "./mobile-nav";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
@@ -11,11 +13,29 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 
+function initialsOf(first: string, last: string, email: string): string {
+  const letters = `${first.charAt(0)}${last.charAt(0)}`.trim();
+  return letters || email.slice(0, 2).toUpperCase();
+}
+
 export function Header() {
+  const router = useRouter();
+  const { user } = useSession();
+  const initials = user
+    ? initialsOf(user.first_name, user.last_name, user.email)
+    : "…";
+
+  async function handleSignOut() {
+    await signOut();
+    toast("Signed out", { description: "See you soon." });
+    router.replace("/login");
+  }
+
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur md:px-6 lg:px-8">
       <MobileNav />
@@ -53,15 +73,30 @@ export function Header() {
           >
             <Avatar className="size-8">
               <AvatarFallback className="text-xs font-medium">
-                RM
+                {initials}
               </AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel className="font-normal">
+            {user ? (
+              <>
+                <p className="text-sm font-medium">
+                  {user.first_name} {user.last_name}
+                </p>
+                <p className="truncate text-xs text-muted-foreground">
+                  {user.email}
+                </p>
+              </>
+            ) : (
+              "Loading…"
+            )}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             onSelect={() =>
-              toast("Profile", { description: "Available in Phase 2" })
+              toast("Profile", { description: "Available in a later phase" })
             }
           >
             <User aria-hidden="true" />
@@ -69,19 +104,14 @@ export function Header() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() =>
-              toast("Settings", { description: "Available in Phase 2" })
+              toast("Settings", { description: "Available in a later phase" })
             }
           >
             <Settings aria-hidden="true" />
             Settings
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            variant="destructive"
-            onSelect={() =>
-              toast("Sign out", { description: "Auth arrives in Phase 2" })
-            }
-          >
+          <DropdownMenuItem variant="destructive" onSelect={handleSignOut}>
             <LogOut aria-hidden="true" />
             Sign out
           </DropdownMenuItem>

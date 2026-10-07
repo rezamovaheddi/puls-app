@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/shared/ui/tooltip";
+import { useSession } from "@/features/session";
 import { mainNav, secondaryNav, type NavItem } from "../config/nav";
 import { cn } from "@/shared/lib/utils";
 
@@ -94,6 +95,7 @@ function SidebarLink({
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { user } = useSession();
   const collapsed = useSyncExternalStore(
     subscribeCollapsed,
     getCollapsedSnapshot,
@@ -179,13 +181,20 @@ export function Sidebar() {
       <div className="shrink-0 border-t border-sidebar-border p-3">
         <div className={cn("flex items-center gap-2", collapsed && "justify-center")}>
           <Avatar>
-            <AvatarFallback className="text-xs font-medium">RM</AvatarFallback>
+            <AvatarFallback className="text-xs font-medium">
+              {user
+                ? `${user.first_name.charAt(0)}${user.last_name.charAt(0)}`.trim() ||
+                  user.email.slice(0, 2).toUpperCase()
+                : "…"}
+            </AvatarFallback>
           </Avatar>
-          {!collapsed && (
+          {!collapsed && user && (
             <div className="min-w-0 space-y-0.5">
-              <p className="truncate text-sm font-medium leading-none">Reza M.</p>
+              <p className="truncate text-sm font-medium leading-none">
+                {`${user.first_name} ${user.last_name}`.trim() || user.email}
+              </p>
               <p className="truncate text-xs text-muted-foreground">
-                reza@acme.dev
+                {user.email}
               </p>
             </div>
           )}
