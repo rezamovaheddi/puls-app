@@ -22,6 +22,7 @@ from apps.common.exceptions import (
     NotFoundError,
 )
 from apps.common.ports import TransactionBoundary
+from apps.common.services.email import send_invitation_email
 from apps.invitations import domain as rules
 from apps.users.domain import normalize_email
 from apps.workspaces.domain import can_manage_members
@@ -77,13 +78,27 @@ class InviteMember:
             raise InvitationAlreadyPendingError
 
         ttl_days = getattr(settings, "INVITATION_TTL_DAYS", 7)
-        return self._invitations.create(
+        invitation = self._invitations.create(
             workspace_id=workspace_id,
             email=normalized,
             role=role,
             invited_by=actor,
             expires_at=self._clock() + timedelta(days=ttl_days),
         )
+
+        # Dispatch SMTP invitation email with confirmation link
+        inviter_name = f"{actor.first_name} {actor.last_name}".strip() or actor.email
+        ws = self._workspaces.get_by_id(workspace_id)
+        ws_name = ws.name if ws else "Workspace"
+        send_invitation_email(
+            to_email=normalized,
+            workspace_name=ws_name,
+            inviter_name=inviter_name,
+            role=role,
+            token=invitation.token,
+        )
+
+        return invitation
 
 
 class ListInvitations:

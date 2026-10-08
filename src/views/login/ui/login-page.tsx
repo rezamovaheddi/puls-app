@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Activity, AlertCircle } from "lucide-react";
 import { ApiError, login } from "@/shared/api";
+import { setSessionUser } from "@/features/session";
 import { Button } from "@/shared/ui/button";
 import {
   Card,
@@ -30,10 +31,13 @@ export function LoginPage() {
     setError(null);
     setFieldErrors({});
     try {
-      await login({ email, password });
+      const user = await login({ email, password });
+      setSessionUser(user);
       // Honor ?next= (e.g. returning to a pending invitation accept page).
       const requested = new URLSearchParams(window.location.search).get("next");
-      router.replace(requested && requested.startsWith("/") ? requested : "/overview");
+      const target = requested && requested.startsWith("/") ? requested : "/overview";
+      router.push(target);
+      router.refresh();
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);

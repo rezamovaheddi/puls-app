@@ -5,3 +5,4 @@ export type { ApiResult } from "./client";
 export * from "./auth";
 export * from "./workspaces";
 export * from "./invitations";
+export * from "./projects";

@@ -90,6 +90,7 @@ LOCAL_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.workspaces.apps.WorkspacesConfig",
     "apps.invitations.apps.InvitationsConfig",
+    "apps.projects.apps.ProjectsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -211,6 +212,13 @@ SPECTACULAR_SETTINGS = {
     ],
 }
 
-# --- Email (no outbound email in this phase) --------------------------------
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# --- Email (SMTP Configuration) --------------------------------
+EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend" if DEBUG else "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = env_int("EMAIL_PORT", default=587)
+EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_SSL = env_bool("EMAIL_USE_SSL", default=False)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Pulse <no-reply@pulse.dev>")
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:3210")

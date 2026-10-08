@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Activity, AlertCircle } from "lucide-react";
 import { ApiError, signup } from "@/shared/api";
+import { setSessionUser } from "@/features/session";
 import { Button } from "@/shared/ui/button";
 import {
   Card,
@@ -39,8 +40,10 @@ export function SignupPage() {
     setError(null);
     setFieldErrors({});
     try {
-      await signup(form);
-      router.replace("/onboarding");
+      const user = await signup(form);
+      setSessionUser(user);
+      router.push("/onboarding");
+      router.refresh();
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
