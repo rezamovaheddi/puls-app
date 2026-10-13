@@ -1,8 +1,4 @@
-"""Invitation domain rules — pure functions, unit-testable without Django.
-
-Status model: PENDING → ACCEPTED | REVOKED; an expired PENDING invitation
-becomes EXPIRED the first time anyone touches it.
-"""
+"""Invitation domain rules and policies — pure Python, unit-testable without Django."""
 
 from __future__ import annotations
 

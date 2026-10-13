@@ -20,7 +20,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.common.exceptions import InvalidRefreshTokenError
 from apps.common.responses import envelope, no_content
-from apps.users.application.repositories import PasswordHasher, UserRepository
+from apps.users.application.ports import PasswordHasher, UserRepository
 from apps.users.application.use_cases import (
     GetCurrentUser,
     LoginUser,

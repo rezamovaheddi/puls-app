@@ -14,13 +14,13 @@ from apps.invitations.application.use_cases import (
     ListInvitations,
     RevokeInvitation,
 )
-from apps.invitations.infrastructure.models import DjangoInvitationRepository
+from apps.invitations.infrastructure.repositories import DjangoInvitationRepository
 from apps.invitations.presentation.serializers import (
     InvitationCreatedSerializer,
     InvitationCreateSerializer,
     InvitationSerializer,
 )
-from apps.workspaces.infrastructure.models import DjangoWorkspaceRepository
+from apps.workspaces.infrastructure.repositories import DjangoWorkspaceRepository
 
 
 def _container() -> tuple[DjangoWorkspaceRepository, DjangoInvitationRepository]:

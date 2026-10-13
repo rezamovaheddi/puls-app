@@ -28,10 +28,12 @@ from apps.users.domain import normalize_email
 from apps.workspaces.domain import can_manage_members
 
 if TYPE_CHECKING:
-    from apps.invitations.application.repositories import InvitationRepository
-    from apps.invitations.infrastructure.models import Invitation, WorkspaceMember
+    from apps.invitations.application.ports import InvitationRepository
+    from apps.invitations.infrastructure.models import Invitation
     from apps.users.infrastructure.models import User
-    from apps.workspaces.application.repositories import WorkspaceRepository
+    from apps.workspaces.application.ports import WorkspaceRepository
+    from apps.workspaces.infrastructure.models import WorkspaceMember
+
 
 
 def _now() -> datetime:
@@ -189,3 +191,18 @@ class RevokeInvitation:
         if invitation.status != rules.PENDING:
             raise ConflictError("Only pending invitations can be revoked.")
         self._invitations.set_status(invitation, rules.REVOKED)
+
+
+# Aliased for specification naming alignment
+CreateInvitation = InviteMember
+ListWorkspaceInvitations = ListInvitations
+
+__all__ = [
+    "InviteMember",
+    "CreateInvitation",
+    "ListInvitations",
+    "ListWorkspaceInvitations",
+    "AcceptInvitation",
+    "RevokeInvitation",
+]
+

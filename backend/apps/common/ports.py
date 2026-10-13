@@ -8,20 +8,10 @@ visible in the use case while the mechanism stays swappable.
 
 from __future__ import annotations
 
-from types import TracebackType
+from contextlib import AbstractContextManager
 from typing import Protocol
 
 
 class TransactionBoundary(Protocol):
-    def atomic(self) -> _AtomicContext: ...
+    def atomic(self) -> AbstractContextManager[None]: ...
 
-
-class _AtomicContext(Protocol):
-    def __enter__(self) -> None: ...
-
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_value: BaseException | None,
-        traceback: TracebackType | None,
-    ) -> None: ...

@@ -17,6 +17,7 @@ from django.db import models
 from django.utils import timezone
 
 from apps.invitations import domain as invitation_rules
+from apps.invitations.infrastructure.repositories import DjangoInvitationRepository
 from apps.users.infrastructure.models import User
 from apps.workspaces.domain import WorkspaceRole
 from apps.workspaces.infrastructure.models import Workspace
@@ -79,44 +80,6 @@ class Invitation(models.Model):
         return invitation_rules.is_expired(self.expires_at, timezone.now())
 
 
-class DjangoInvitationRepository:
-    def get_by_token(self, token: str) -> Invitation | None:
-        return Invitation.objects.filter(token=token).first()
+__all__ = ["Invitation", "DjangoInvitationRepository"]
 
-    def get_by_id(self, invitation_id: object) -> Invitation | None:
-        return Invitation.objects.filter(pk=invitation_id).first()
 
-    def pending_exists(self, workspace_id: object, email: str) -> bool:
-        return Invitation.objects.filter(
-            workspace_id=workspace_id,
-            email__iexact=email,
-            status=invitation_rules.PENDING,
-        ).exists()
-
-    def create(
-        self,
-        *,
-        workspace_id: object,
-        email: str,
-        role: str,
-        invited_by: User,
-        expires_at: object,
-    ) -> Invitation:
-        return Invitation.objects.create(
-            workspace_id=workspace_id,
-            email=email,
-            role=role,
-            invited_by=invited_by,
-            expires_at=expires_at,
-        )
-
-    def list_for_workspace(self, workspace_id: object) -> list[Invitation]:
-        return list(
-            Invitation.objects.filter(workspace_id=workspace_id)
-            .select_related("invited_by")
-            .order_by("-created_at")
-        )
-
-    def set_status(self, invitation: Invitation, status: str) -> None:
-        invitation.status = status
-        invitation.save(update_fields=["status"])

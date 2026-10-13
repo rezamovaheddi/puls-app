@@ -1,29 +1,5 @@
-"""Ports the application layer depends on — implemented in infrastructure."""
+"""Ports the application layer depends on — re-exported from ports.py."""
 
-from __future__ import annotations
+from apps.users.application.ports import PasswordHasher, UserRepository
 
-from typing import TYPE_CHECKING, Protocol
-
-if TYPE_CHECKING:
-    from apps.users.infrastructure.models import User
-
-
-class UserRepository(Protocol):
-    def get_by_email(self, email: str) -> User | None: ...
-
-    def get_by_id(self, user_id: object) -> User | None: ...
-
-    def create(
-        self,
-        *,
-        email: str,
-        password_hash: str,
-        first_name: str,
-        last_name: str,
-    ) -> User: ...
-
-
-class PasswordHasher(Protocol):
-    def hash(self, raw_password: str) -> str: ...
-
-    def verify(self, raw_password: str, password_hash: str) -> bool: ...
+__all__ = ["UserRepository", "PasswordHasher"]

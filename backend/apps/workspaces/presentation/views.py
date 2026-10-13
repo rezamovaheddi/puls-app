@@ -12,7 +12,7 @@ from apps.workspaces.application.use_cases import (
     GetWorkspace,
     ListUserWorkspaces,
 )
-from apps.workspaces.infrastructure.models import DjangoWorkspaceRepository
+from apps.workspaces.infrastructure.repositories import DjangoWorkspaceRepository
 from apps.workspaces.presentation.serializers import (
     WorkspaceCreateSerializer,
     WorkspaceSerializer,

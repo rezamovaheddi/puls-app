@@ -6,6 +6,7 @@ Handles SMTP delivery with graceful fallback and clean HTML formatting.
 from __future__ import annotations
 
 import logging
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 

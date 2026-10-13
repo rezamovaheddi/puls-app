@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
+
 from django.conf import settings
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -10,7 +11,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.common.exceptions import ForbiddenError, NotFoundError
+from apps.common.exceptions import NotFoundError
 from apps.common.responses import envelope, no_content
 from apps.common.services.email import send_invitation_email
 from apps.invitations.infrastructure.models import DjangoInvitationRepository

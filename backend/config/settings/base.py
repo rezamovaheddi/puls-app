@@ -33,7 +33,8 @@ def env_bool(key: str, default: bool = False) -> bool:
 
 def env_int(key: str, default: int) -> int:
     raw = env(key)
-    return int(raw) if raw is not None else default  # type: ignore[arg-type]
+    return int(raw) if raw is not None else default
+
 
 
 def env_list(key: str, default: list[str]) -> list[str]:
@@ -121,9 +122,10 @@ TEMPLATES = [
 
 DATABASES = {
     "default": _database_from_url(
-        env("DATABASE_URL", default=f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}")
+        env("DATABASE_URL", default=f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}") or ""
     )
 }
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -157,7 +159,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
-    "EXCEPTION_HANDLER": "apps.common.exceptions.api_exception_handler",
+    "EXCEPTION_HANDLER": "apps.common.api.exception_handler.api_exception_handler",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_CLASSES": [],
     "DEFAULT_THROTTLE_RATES": {

@@ -14,6 +14,7 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = User
         django_get_or_create = ["email"]
 
+
     email = factory.Sequence(lambda n: f"user{n}@example.com")
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
@@ -25,6 +26,8 @@ class WorkspaceFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Workspace
+        skip_postgeneration_save = True
+
 
     name = factory.Sequence(lambda n: f"Workspace {n}")
     slug = factory.Sequence(lambda n: f"workspace-{n}")

@@ -8,7 +8,6 @@ from apps.projects.infrastructure.models import (
     ProjectRole,
     ProjectStatus,
     Task,
-    TaskPriority,
     TaskStatus,
 )
 from apps.users.infrastructure.models import User

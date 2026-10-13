@@ -16,7 +16,7 @@ from apps.common.exceptions import (
 from apps.users.domain import normalize_email
 
 if TYPE_CHECKING:
-    from apps.users.application.repositories import (
+    from apps.users.application.ports import (
         PasswordHasher,
         UserRepository,
     )
@@ -71,3 +71,10 @@ class GetCurrentUser:
         if user is None:
             raise NotFoundError("Authenticated user no longer exists.")
         return user
+
+
+# Aliased for naming consistency with specification
+AuthenticateUser = LoginUser
+
+__all__ = ["RegisterUser", "LoginUser", "AuthenticateUser", "GetCurrentUser"]
+
