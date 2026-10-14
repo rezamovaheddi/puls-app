@@ -1,0 +1,69 @@
+services:
+  # Database service
+  db:
+    image: postgres:16-alpine
+    container_name: pulse_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pulse
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pulse_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pulse"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Django Backend service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pulse_backend
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: "django-insecure-dev-key-change-in-prod"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,backend"
+      DATABASE_URL: "postgres://postgres:pulse_password@db:5432/pulse"
+      CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
+      JWT_ACCESS_MINUTES: "15"
+      JWT_REFRESH_DAYS: "7"
+      REFRESH_COOKIE_SECURE: "false"
+      REFRESH_COOKIE_SAMESITE: "Lax"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Next.js Frontend service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pulse_frontend
+    restart: unless-stopped
+    command: npm run dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:8000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
